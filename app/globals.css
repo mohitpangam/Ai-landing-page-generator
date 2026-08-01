@@ -1,26 +1,220 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@custom-variant dark (&:is(.dark *));
 
+/* ─────────────────────────────────────────────────────────────────────────────
+   Tailwind v4 Theme — map CSS vars to utility classes
+   ───────────────────────────────────────────────────────────────────────────── */
 @theme inline {
+  /* shadcn base tokens */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
+  --font-sans: var(--font-sans);
   --font-mono: var(--font-geist-mono);
+  --font-heading: var(--font-sans);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+
+  /* ── Brand / Surface / Text / Border tokens (Design Doc §2.2) ── */
+  --color-brand-primary: var(--brand-primary);
+  --color-brand-primary-hover: var(--brand-primary-hover);
+  --color-surface-base: var(--surface-base);
+  --color-surface-dark: var(--surface-dark);
+  --color-surface-brand: var(--surface-brand);
+  --color-text-primary: var(--text-primary);
+  --color-text-tertiary: var(--text-tertiary);
+  --color-text-accent: var(--text-accent);
+  --color-border-subtle: var(--border-subtle);
+
+  /* ── Spacing scale (Design Doc §2.4) ── */
+  --spacing-micro: 0.25rem;      /* 4px  */
+  --spacing-extra-small: 0.5rem; /* 8px  */
+  --spacing-small: 0.75rem;      /* 12px */
+  --spacing-medium: 1rem;        /* 16px */
+  --spacing-main: 1.5rem;        /* 24px */
+  --spacing-large: 3rem;         /* 48px */
+  --spacing-extra-large: 6rem;   /* 96px */
+
+  /* ── Typography scale (Design Doc §2.3) ── */
+  --text-h1: 3.5rem / 1.1;      /* 56px, tight leading — hero only */
+  --text-h2: 2.5rem / 1.2;      /* 40px — section headings */
+  --text-h3: 1.5rem / 1.3;      /* 24px — card / subsection headings */
+  --text-large: 1.125rem / 1.6; /* 18px — hero subcopy, lead */
+  --text-main: 1rem / 1.6;      /* 16px — body copy */
+  --text-small: 0.875rem / 1.5; /* 14px — labels, secondary copy */
+  --text-extra-small: 0.75rem / 1.4; /* 12px — badges, meta, timestamps */
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* ─────────────────────────────────────────────────────────────────────────────
+   Root CSS variables — light mode defaults
+   ───────────────────────────────────────────────────────────────────────────── */
+:root {
+  /* shadcn base — primary overridden to brand-primary for all shadcn components */
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+
+  /* Brand indigo as shadcn "primary" so buttons/rings etc. all use the brand colour */
+  --primary: #3D5AFE;
+  --primary-foreground: #ffffff;
+
+  --secondary: oklch(0.97 0 0);
+  --secondary-foreground: oklch(0.205 0 0);
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.556 0 0);
+  --accent: oklch(0.97 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: oklch(0.922 0 0);
+  --input: oklch(0.922 0 0);
+  --ring: #3D5AFE;
+  --chart-1: oklch(0.87 0 0);
+  --chart-2: oklch(0.556 0 0);
+  --chart-3: oklch(0.439 0 0);
+  --chart-4: oklch(0.371 0 0);
+  --chart-5: oklch(0.269 0 0);
+  --radius: 0.625rem;
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.145 0 0);
+  --sidebar-primary: #3D5AFE;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: oklch(0.97 0 0);
+  --sidebar-accent-foreground: oklch(0.205 0 0);
+  --sidebar-border: oklch(0.922 0 0);
+  --sidebar-ring: oklch(0.708 0 0);
+
+  /* ── Product brand palette (Design Doc §2.2) ── */
+  --brand-primary: #3D5AFE;
+  --brand-primary-hover: #2E46DB;
+
+  /* ── Surface tokens ── */
+  --surface-base: #FFFFFF;
+  --surface-dark: #0B0F19;
+  --surface-brand: #EEF1FF;
+
+  /* ── Text tokens (only three — constraint from Design Doc §2.2) ── */
+  --text-primary: #0F1222;
+  --text-tertiary: #6B7280;
+  --text-accent: #3D5AFE; /* same as brand-primary */
+
+  /* ── Border token ── */
+  --border-subtle: #E5E7EB;
+
+  /* ── Generated landing-page theme swatches (Design Doc §2.2) ── */
+  /* These 6 are offered to users as theme choices for their generated pages */
+  --swatch-indigo: #3D5AFE;
+  --swatch-teal: #14B8A6;
+  --swatch-coral: #F97066;
+  --swatch-violet: #7C3AED;
+  --swatch-magenta: #D946EF;
+  --swatch-near-black: #0F1222;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Dark mode overrides (app-chrome dark, not generated-page theming)
+   ───────────────────────────────────────────────────────────────────────────── */
+.dark {
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.205 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.205 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: #3D5AFE;
+  --primary-foreground: #ffffff;
+  --secondary: oklch(0.269 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --accent: oklch(0.269 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: #3D5AFE;
+  --chart-1: oklch(0.87 0 0);
+  --chart-2: oklch(0.556 0 0);
+  --chart-3: oklch(0.439 0 0);
+  --chart-4: oklch(0.371 0 0);
+  --chart-5: oklch(0.269 0 0);
+  --sidebar: oklch(0.205 0 0);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: #3D5AFE;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: oklch(0.269 0 0);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: #3D5AFE;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Per-section dark theming (data-theme="dark-section")
+   Applied to individual marketing/landing sections, NOT a global dark mode.
+   Scoped so it never bleeds into adjacent sections (Design Doc §2.9).
+   ───────────────────────────────────────────────────────────────────────────── */
+[data-theme="dark-section"] {
+  background-color: var(--surface-dark);
+  color: #ffffff;
+  --text-primary: #ffffff;
+  --text-tertiary: rgba(255, 255, 255, 0.6);
+  --border-subtle: rgba(255, 255, 255, 0.12);
+}
+
+[data-theme="brand-section"] {
+  background-color: var(--surface-brand);
+  color: var(--text-primary);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Base layer
+   ───────────────────────────────────────────────────────────────────────────── */
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
   }
-}
-
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  body {
+    @apply bg-background text-foreground;
+  }
+  html {
+    @apply font-sans;
+  }
 }
