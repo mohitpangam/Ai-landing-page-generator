@@ -1,3 +1,5 @@
+"use client";
+
 import type { PageSchema, ThemeTokens } from "@/lib/schema/page";
 import { sectionRegistry } from "@/components/sections";
 import { PageRendererContext } from "@/components/PageRendererContext";
@@ -73,4 +75,3 @@ export function PageRenderer({ schema, className, isEditable = false }: PageRend
     </PageRendererContext.Provider>
   );
 }
-
