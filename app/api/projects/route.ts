@@ -22,9 +22,24 @@ export async function GET(req: Request) {
       ? (statusParam as AllowedStatus)
       : undefined;
 
+    // Find user record in DB to resolve both CUID and OAuth sub IDs
+    const dbUser = await db.user.findFirst({
+      where: {
+        OR: [
+          { id: session.user.id },
+          ...(session.user.email ? [{ email: session.user.email }] : []),
+        ],
+      },
+      select: { id: true },
+    });
+
+    const userIds = Array.from(
+      new Set([session.user.id, dbUser?.id].filter(Boolean) as string[])
+    );
+
     const projects = await db.project.findMany({
       where: {
-        userId: session.user.id,
+        userId: { in: userIds },
         status: statusFilter
           ? { equals: statusFilter }
           : { in: ["ACTIVE", "ARCHIVED"] },
