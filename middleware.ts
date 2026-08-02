@@ -1,21 +1,7 @@
-import { auth } from "@/auth";
-import { NextResponse } from "next/server";
+import NextAuth from "next-auth";
+import { authConfig } from "./auth.config";
 
-export default auth((req) => {
-  const isLoggedIn = !!req.auth;
-  const { pathname } = req.nextUrl;
-
-  const isProtected =
-    pathname.startsWith("/dashboard") || pathname.startsWith("/editor");
-
-  if (isProtected && !isLoggedIn) {
-    const redirectUrl = new URL("/", req.url);
-    redirectUrl.searchParams.set("callbackUrl", pathname);
-    return NextResponse.redirect(redirectUrl);
-  }
-
-  return NextResponse.next();
-});
+export default NextAuth(authConfig).auth;
 
 export const config = {
   matcher: ["/dashboard/:path*", "/editor/:path*"],
