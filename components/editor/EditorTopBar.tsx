@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { useEditorStore } from "@/lib/editor/store";
 import { VersionHistoryDrawer } from "./VersionHistoryDrawer";
+import { ExportModal } from "./ExportModal";
 
 interface Props {
   projectName: string;
@@ -47,6 +48,7 @@ export function EditorTopBar({ projectName, user }: Props) {
   const { viewport, setViewport, undo, redo, canUndo, canRedo, saveStatus } =
     useEditorStore();
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
+  const [isExportOpen, setIsExportOpen] = useState(false);
 
   const saveLabel =
     saveStatus === "saving"
@@ -172,11 +174,12 @@ export function EditorTopBar({ projectName, user }: Props) {
 
           <span className="h-4 w-px bg-border-subtle" />
 
-          {/* Export (Phase 12 placeholder) */}
+          {/* Export Button */}
           <button
             id="export-btn"
             type="button"
-            title="Export (coming in Phase 12)"
+            onClick={() => setIsExportOpen(true)}
+            title="Export Code"
             className="inline-flex items-center gap-1.5 rounded-lg border border-border-subtle px-3 py-1.5 text-xs font-semibold text-text-primary hover:bg-surface-brand transition-colors"
           >
             <svg viewBox="0 0 14 14" className="h-3.5 w-3.5" fill="none" aria-hidden="true">
@@ -206,6 +209,12 @@ export function EditorTopBar({ projectName, user }: Props) {
       <VersionHistoryDrawer
         isOpen={isHistoryOpen}
         onClose={() => setIsHistoryOpen(false)}
+      />
+
+      {/* Export Modal */}
+      <ExportModal
+        isOpen={isExportOpen}
+        onClose={() => setIsExportOpen(false)}
       />
     </>
   );
