@@ -52,7 +52,7 @@ export async function generateNextjsZip(
       moduleResolution: "bundler",
       resolveJsonModule: true,
       isolatedModules: true,
-      "jsx": "preserve",
+      jsx: "preserve",
       incremental: true,
       plugins: [{ name: "next" }],
       paths: {
@@ -356,7 +356,9 @@ export function EditableText({
   // components/PageRenderer.tsx
   zip.file(
     "components/PageRenderer.tsx",
-    `import type { PageSchema, ThemeTokens } from "@/lib/schema/page";
+    `"use client";
+
+import type { PageSchema, ThemeTokens } from "@/lib/schema/page";
 import { sectionRegistry } from "@/components/sections";
 import { PageRendererContext } from "@/components/PageRendererContext";
 
@@ -435,7 +437,9 @@ export const sectionRegistry: Record<Section["type"], SectionComponent> = {
   // components/sections/HeroSection.tsx
   zip.file(
     "components/sections/HeroSection.tsx",
-    `import type { HeroSection as HeroSectionProps } from "@/lib/schema/page";
+    `"use client";
+
+import type { HeroSection as HeroSectionProps } from "@/lib/schema/page";
 import { EditableText } from "@/components/editor/EditableText";
 
 interface Props {
@@ -490,7 +494,9 @@ export function HeroSection({ section }: Props) {
   // components/sections/FeaturesSection.tsx
   zip.file(
     "components/sections/FeaturesSection.tsx",
-    `import type { FeaturesSection as FeaturesSectionProps } from "@/lib/schema/page";
+    `"use client";
+
+import type { FeaturesSection as FeaturesSectionProps } from "@/lib/schema/page";
 import { EditableText } from "@/components/editor/EditableText";
 
 interface Props {
@@ -536,7 +542,9 @@ export function FeaturesSection({ section }: Props) {
   // components/sections/TestimonialsSection.tsx
   zip.file(
     "components/sections/TestimonialsSection.tsx",
-    `import type { TestimonialsSection as TestimonialsSectionProps } from "@/lib/schema/page";
+    `"use client";
+
+import type { TestimonialsSection as TestimonialsSectionProps } from "@/lib/schema/page";
 import { EditableText } from "@/components/editor/EditableText";
 
 interface Props {
@@ -593,7 +601,9 @@ export function TestimonialsSection({ section }: Props) {
   // components/sections/PricingSection.tsx
   zip.file(
     "components/sections/PricingSection.tsx",
-    `import type { PricingSection as PricingSectionProps } from "@/lib/schema/page";
+    `"use client";
+
+import type { PricingSection as PricingSectionProps } from "@/lib/schema/page";
 import { EditableText } from "@/components/editor/EditableText";
 
 interface Props {
@@ -656,7 +666,9 @@ export function PricingSection({ section }: Props) {
   // components/sections/CtaSection.tsx
   zip.file(
     "components/sections/CtaSection.tsx",
-    `import type { CtaSection as CtaSectionProps } from "@/lib/schema/page";
+    `"use client";
+
+import type { CtaSection as CtaSectionProps } from "@/lib/schema/page";
 import { EditableText } from "@/components/editor/EditableText";
 
 interface Props {
@@ -740,7 +752,9 @@ export function FaqSection({ section }: Props) {
   // components/sections/FooterSection.tsx
   zip.file(
     "components/sections/FooterSection.tsx",
-    `import type { FooterSection as FooterSectionProps } from "@/lib/schema/page";
+    `"use client";
+
+import type { FooterSection as FooterSectionProps } from "@/lib/schema/page";
 import { EditableText } from "@/components/editor/EditableText";
 
 interface Props {
