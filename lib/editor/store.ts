@@ -27,9 +27,10 @@ interface EditorActions {
   deleteSection: (sectionId: string) => void;
   addSection: (section: Section, index?: number) => void;
 
-  // ── Theme / Meta ──
+  // ── Theme / Meta / Version ──
   updateTheme: (patch: Partial<ThemeTokens>) => void;
   updateMeta: (patch: Partial<PageMeta>) => void;
+  restoreSchema: (schema: PageSchema) => void;
 
   // ── Undo / Redo ──
   undo: () => void;
@@ -131,6 +132,11 @@ export const useEditorStore = create<EditorStore>((set, get) => ({
     const state = get();
     const meta = { ...state.schema.meta, ...patch };
     set(pushUndo(state, { ...state.schema, meta }));
+  },
+
+  restoreSchema: (schema) => {
+    const state = get();
+    set(pushUndo(state, schema));
   },
 
   // ── Undo / Redo ──
