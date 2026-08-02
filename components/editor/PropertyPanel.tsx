@@ -368,6 +368,119 @@ function ThemeTab() {
   );
 }
 
+// ─── SEO tab ──────────────────────────────────────────────────────────────────
+function SeoTab() {
+  const { schema, updateMeta } = useEditorStore();
+  const meta = schema.meta ?? { title: "", description: "" };
+
+  const descLength = meta.description?.length ?? 0;
+  const isDescOptimal = descLength >= 50 && descLength <= 160;
+
+  return (
+    <div className="flex flex-col gap-6">
+      {/* Form Fields */}
+      <div className="flex flex-col gap-4">
+        <Field label="Page Title (SEO)">
+          <TextInput
+            value={meta.title ?? ""}
+            onChange={(v) => updateMeta({ title: v })}
+            placeholder="e.g. LaunchPad — Fast Project Management"
+          />
+        </Field>
+
+        <Field label="Meta Description">
+          <TextArea
+            rows={3}
+            value={meta.description ?? ""}
+            onChange={(v) => updateMeta({ description: v })}
+            placeholder="A short, catchy summary of your product for search engines and social shares."
+          />
+          <div className="flex items-center justify-between text-xs mt-1">
+            <span
+              className={
+                isDescOptimal
+                  ? "text-emerald-600 font-medium"
+                  : descLength > 160
+                  ? "text-red-500 font-medium"
+                  : "text-text-tertiary"
+              }
+            >
+              {isDescOptimal
+                ? "✓ Optimal length"
+                : descLength > 160
+                ? "Too long (max 160 recommended)"
+                : "Recommended: 50–160 chars"}
+            </span>
+            <span className="tabular-nums text-text-tertiary">{descLength} chars</span>
+          </div>
+        </Field>
+
+        <Field label="Social Share Image (OG Image)">
+          <TextInput
+            value={meta.ogImageUrl ?? ""}
+            onChange={(v) => updateMeta({ ogImageUrl: v })}
+            placeholder="https://example.com/og-image.jpg"
+          />
+        </Field>
+      </div>
+
+      {/* Google Search Live Preview */}
+      <div className="border-t border-border-subtle pt-5">
+        <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-text-tertiary">
+          Google Search Preview
+        </p>
+        <div className="rounded-xl border border-border-subtle bg-white p-4 text-left shadow-xs">
+          <div className="flex items-center gap-1.5 text-xs text-[#202124]">
+            <span className="flex h-4 w-4 items-center justify-center rounded-full bg-gray-100 text-[10px] font-bold text-gray-600">
+              G
+            </span>
+            <span className="truncate text-[#202124]">https://yourpage.com</span>
+          </div>
+          <h3 className="mt-1 text-base font-medium text-[#1a0dab] hover:underline cursor-pointer line-clamp-1">
+            {meta.title || "Your Page Title"}
+          </h3>
+          <p className="mt-1 text-xs leading-relaxed text-[#4d5156] line-clamp-2">
+            {meta.description || "Add a meta description to see how your page will appear in Google search results."}
+          </p>
+        </div>
+      </div>
+
+      {/* Social Card Live Preview */}
+      <div className="border-t border-border-subtle pt-5">
+        <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-text-tertiary">
+          Social Share Preview (OpenGraph)
+        </p>
+        <div className="overflow-hidden rounded-xl border border-border-subtle bg-white shadow-xs">
+          {meta.ogImageUrl ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={meta.ogImageUrl}
+              alt="OG Social Card Preview"
+              className="h-36 w-full object-cover"
+            />
+          ) : (
+            <div className="flex h-28 w-full flex-col items-center justify-center bg-surface-brand text-text-tertiary">
+              <span className="text-2xl mb-1">🖼️</span>
+              <span className="text-xs">No social image set</span>
+            </div>
+          )}
+          <div className="p-3">
+            <p className="text-[10px] font-semibold uppercase tracking-wider text-text-tertiary">
+              YOURPAGE.COM
+            </p>
+            <p className="text-sm font-bold text-text-primary line-clamp-1 mt-0.5">
+              {meta.title || "Your Page Title"}
+            </p>
+            <p className="text-xs text-text-tertiary line-clamp-2 mt-0.5 leading-relaxed">
+              {meta.description || "Page description summary."}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // ─── Content dispatcher ───────────────────────────────────────────────────────
 function ContentTab({ section }: { section: Section }) {
   switch (section.type) {
@@ -383,7 +496,7 @@ function ContentTab({ section }: { section: Section }) {
 }
 
 // ─── PropertyPanel ────────────────────────────────────────────────────────────
-type PanelTab = "content" | "theme";
+type PanelTab = "content" | "theme" | "seo";
 
 export function PropertyPanel() {
   const { schema, selectedSectionId } = useEditorStore();
@@ -395,7 +508,7 @@ export function PropertyPanel() {
     <div className="flex h-full flex-col">
       {/* Tabs */}
       <div className="flex flex-shrink-0 border-b border-border-subtle">
-        {(["content", "theme"] as PanelTab[]).map((tab) => (
+        {(["content", "theme", "seo"] as PanelTab[]).map((tab) => (
           <button
             key={tab}
             id={`panel-tab-${tab}`}
@@ -416,6 +529,8 @@ export function PropertyPanel() {
       <div className="flex-1 overflow-y-auto p-4">
         {activeTab === "theme" ? (
           <ThemeTab />
+        ) : activeTab === "seo" ? (
+          <SeoTab />
         ) : selectedSection ? (
           <ContentTab section={selectedSection} />
         ) : (
@@ -425,7 +540,7 @@ export function PropertyPanel() {
               Click a section to edit
             </p>
             <p className="mt-1 text-xs text-text-tertiary">
-              Or use the Theme tab to change colours and style.
+              Or use Theme / SEO tabs to edit global settings.
             </p>
           </div>
         )}
