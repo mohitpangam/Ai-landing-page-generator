@@ -1187,6 +1187,8 @@ export const ProjectScalarFieldEnum = {
   slug: 'slug',
   status: 'status',
   isPublished: 'isPublished',
+  viewsCount: 'viewsCount',
+  clicksCount: 'clicksCount',
   prompt: 'prompt',
   thumbnailUrl: 'thumbnailUrl',
   currentVersionId: 'currentVersionId',

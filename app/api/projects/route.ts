@@ -54,6 +54,8 @@ export async function GET(req: Request) {
         slug: true,
         status: true,
         isPublished: true,
+        viewsCount: true,
+        clicksCount: true,
         thumbnailUrl: true,
         prompt: true,
         createdAt: true,

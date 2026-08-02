@@ -79,6 +79,8 @@ model Project {
   slug             String        @unique
   status           ProjectStatus @default(ACTIVE)
   isPublished      Boolean       @default(false)
+  viewsCount       Int           @default(0)
+  clicksCount      Int           @default(0)
   prompt           String
   thumbnailUrl     String?
   currentVersionId String?

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { db } from "@/lib/db";
 import { PageRenderer } from "@/components/PageRenderer";
+import { AnalyticsTracker } from "@/components/analytics/AnalyticsTracker";
 import type { PageSchema } from "@/lib/schema/page";
 
 interface PageProps {
@@ -62,6 +63,7 @@ export default async function PublishedPage({ params }: PageProps) {
 
   return (
     <main className="min-h-screen bg-white">
+      <AnalyticsTracker projectId={project.id} />
       <PageRenderer schema={schema} isEditable={false} />
     </main>
   );

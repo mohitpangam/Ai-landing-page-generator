@@ -10,6 +10,8 @@ interface Project {
   slug: string;
   status: string;
   isPublished?: boolean;
+  viewsCount?: number;
+  clicksCount?: number;
   thumbnailUrl?: string | null;
   prompt: string;
   updatedAt: string;
@@ -269,6 +271,23 @@ export function ProjectCard({
             )}
           </div>
         </div>
+
+        {/* Live Analytics Row */}
+        {project.isPublished && (
+          <div className="mt-2.5 flex items-center gap-3 border-t border-border-subtle pt-2.5 text-[11px] text-text-tertiary">
+            <span className="flex items-center gap-1 font-medium" title="Page Views">
+              👁️ {project.viewsCount ?? 0} views
+            </span>
+            <span className="flex items-center gap-1 font-medium" title="CTA Button Clicks">
+              🎯 {project.clicksCount ?? 0} clicks
+            </span>
+            {project.viewsCount ? (
+              <span className="ml-auto font-semibold text-emerald-600" title="Click-Through Rate">
+                {Math.round(((project.clicksCount ?? 0) / project.viewsCount) * 100)}% CTR
+              </span>
+            ) : null}
+          </div>
+        )}
       </div>
     </div>
   );

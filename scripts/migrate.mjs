@@ -9,7 +9,9 @@ async function main() {
   console.log("Connecting to Neon database...");
   try {
     await sql`ALTER TABLE "Project" ADD COLUMN IF NOT EXISTS "isPublished" BOOLEAN DEFAULT false;`;
-    console.log("SUCCESS: isPublished column created/verified in Neon PostgreSQL!");
+    await sql`ALTER TABLE "Project" ADD COLUMN IF NOT EXISTS "viewsCount" INTEGER DEFAULT 0;`;
+    await sql`ALTER TABLE "Project" ADD COLUMN IF NOT EXISTS "clicksCount" INTEGER DEFAULT 0;`;
+    console.log("SUCCESS: Analytics columns (viewsCount, clicksCount, isPublished) created/verified in Neon PostgreSQL!");
   } catch (err) {
     console.error("Migration error:", err);
   }
