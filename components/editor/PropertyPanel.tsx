@@ -372,6 +372,7 @@ function ThemeTab() {
 function SeoTab() {
   const { schema, updateMeta } = useEditorStore();
   const meta = schema.meta ?? { title: "", description: "" };
+  const [imgError, setImgError] = useState(false);
 
   const descLength = meta.description?.length ?? 0;
   const isDescOptimal = descLength >= 50 && descLength <= 160;
@@ -415,12 +416,21 @@ function SeoTab() {
           </div>
         </Field>
 
-        <Field label="Social Share Image (OG Image)">
+        <Field label="Social Share Image (OG Image URL)">
           <TextInput
             value={meta.ogImageUrl ?? ""}
-            onChange={(v) => updateMeta({ ogImageUrl: v })}
-            placeholder="https://example.com/og-image.jpg"
+            onChange={(v) => {
+              setImgError(false);
+              updateMeta({ ogImageUrl: v });
+            }}
+            placeholder="https://images.unsplash.com/photo-..."
           />
+          <div className="mt-1.5 rounded-lg border border-border-subtle bg-surface-brand p-2.5 text-xs text-text-tertiary leading-relaxed">
+            <p className="font-semibold text-text-primary mb-0.5">💡 How to copy from Google Images:</p>
+            <p>
+              Right-click the image in Google and click <strong className="text-text-primary">"Copy image address"</strong> (or "Copy image link"), not "Copy link". The URL should end in <code className="bg-surface-base px-1 py-0.5 rounded text-[11px]">.jpg</code>, <code className="bg-surface-base px-1 py-0.5 rounded text-[11px]">.png</code>, or <code className="bg-surface-base px-1 py-0.5 rounded text-[11px]">.webp</code>.
+            </p>
+          </div>
         </Field>
       </div>
 
@@ -451,17 +461,31 @@ function SeoTab() {
           Social Share Preview (OpenGraph)
         </p>
         <div className="overflow-hidden rounded-xl border border-border-subtle bg-white shadow-xs">
-          {meta.ogImageUrl ? (
+          {meta.ogImageUrl && !imgError ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img
               src={meta.ogImageUrl}
               alt="OG Social Card Preview"
+              onError={() => setImgError(true)}
+              referrerPolicy="no-referrer"
               className="h-36 w-full object-cover"
             />
           ) : (
-            <div className="flex h-28 w-full flex-col items-center justify-center bg-surface-brand text-text-tertiary">
-              <span className="text-2xl mb-1">🖼️</span>
-              <span className="text-xs">No social image set</span>
+            <div className="flex h-28 w-full flex-col items-center justify-center bg-surface-brand px-4 text-center text-text-tertiary">
+              {imgError ? (
+                <>
+                  <span className="text-xl mb-1">⚠️</span>
+                  <span className="text-xs font-medium text-red-500">Image failed to load</span>
+                  <span className="text-[11px] text-text-tertiary mt-0.5">
+                    Make sure it is a direct image URL (e.g. ending in .jpg/.png)
+                  </span>
+                </>
+              ) : (
+                <>
+                  <span className="text-2xl mb-1">🖼️</span>
+                  <span className="text-xs">No social image set</span>
+                </>
+              )}
             </div>
           )}
           <div className="p-3">
