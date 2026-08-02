@@ -3,22 +3,32 @@
 import { useState } from "react";
 import { useEditorStore } from "@/lib/editor/store";
 import type { Section, ThemeTokens } from "@/lib/schema/page";
+import { AiRewriteButton } from "./AiRewriteButton";
 
 // ─── Shared field components ──────────────────────────────────────────────────
 function Field({
   label,
   children,
+  currentValue,
+  onAiRewrite,
 }: {
   label: string;
   children: React.ReactNode;
+  currentValue?: string;
+  onAiRewrite?: (v: string) => void;
 }) {
   return (
-    <label className="flex flex-col gap-1.5">
-      <span className="text-xs font-semibold text-text-tertiary uppercase tracking-wide">
-        {label}
-      </span>
+    <div className="flex flex-col gap-1.5">
+      <div className="flex items-center justify-between">
+        <span className="text-xs font-semibold text-text-tertiary uppercase tracking-wide">
+          {label}
+        </span>
+        {onAiRewrite && currentValue && (
+          <AiRewriteButton currentText={currentValue} onApply={onAiRewrite} />
+        )}
+      </div>
       {children}
-    </label>
+    </div>
   );
 }
 
@@ -76,22 +86,22 @@ function HeroProps({ section }: { section: Extract<Section, { type: "hero" }> })
 
   return (
     <div className="flex flex-col gap-4">
-      <Field label="Eyebrow">
+      <Field label="Eyebrow" currentValue={c.eyebrow ?? ""} onAiRewrite={(v) => update({ eyebrow: v })}>
         <TextInput value={c.eyebrow ?? ""} onChange={(v) => update({ eyebrow: v })} placeholder="Optional label" />
       </Field>
-      <Field label="Headline">
+      <Field label="Headline" currentValue={c.headline} onAiRewrite={(v) => update({ headline: v })}>
         <TextArea value={c.headline} onChange={(v) => update({ headline: v })} rows={2} />
       </Field>
-      <Field label="Subheadline">
+      <Field label="Subheadline" currentValue={c.subheadline} onAiRewrite={(v) => update({ subheadline: v })}>
         <TextArea value={c.subheadline} onChange={(v) => update({ subheadline: v })} rows={3} />
       </Field>
-      <Field label="Primary CTA text">
+      <Field label="Primary CTA text" currentValue={c.primaryCtaText} onAiRewrite={(v) => update({ primaryCtaText: v })}>
         <TextInput value={c.primaryCtaText} onChange={(v) => update({ primaryCtaText: v })} />
       </Field>
       <Field label="Primary CTA link">
         <TextInput value={c.primaryCtaLink ?? ""} onChange={(v) => update({ primaryCtaLink: v })} placeholder="https://…" />
       </Field>
-      <Field label="Secondary CTA text">
+      <Field label="Secondary CTA text" currentValue={c.secondaryCtaText ?? ""} onAiRewrite={(v) => update({ secondaryCtaText: v })}>
         <TextInput value={c.secondaryCtaText ?? ""} onChange={(v) => update({ secondaryCtaText: v })} placeholder="Optional" />
       </Field>
       <Field label="Hero image URL">
@@ -110,9 +120,9 @@ function FeaturesProps({ section }: { section: Extract<Section, { type: "feature
 
   return (
     <div className="flex flex-col gap-4">
-      <Field label="Eyebrow"><TextInput value={c.eyebrow ?? ""} onChange={(v) => update({ eyebrow: v })} /></Field>
-      <Field label="Title"><TextInput value={c.title} onChange={(v) => update({ title: v })} /></Field>
-      <Field label="Description"><TextArea value={c.description ?? ""} onChange={(v) => update({ description: v })} /></Field>
+      <Field label="Eyebrow" currentValue={c.eyebrow ?? ""} onAiRewrite={(v) => update({ eyebrow: v })}><TextInput value={c.eyebrow ?? ""} onChange={(v) => update({ eyebrow: v })} /></Field>
+      <Field label="Title" currentValue={c.title} onAiRewrite={(v) => update({ title: v })}><TextInput value={c.title} onChange={(v) => update({ title: v })} /></Field>
+      <Field label="Description" currentValue={c.description ?? ""} onAiRewrite={(v) => update({ description: v })}><TextArea value={c.description ?? ""} onChange={(v) => update({ description: v })} /></Field>
       <div className="border-t border-border-subtle pt-4">
         <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-text-tertiary">Feature cards</p>
         {c.features.map((feat, idx) => (
@@ -148,8 +158,8 @@ function TestimonialsProps({ section }: { section: Extract<Section, { type: "tes
 
   return (
     <div className="flex flex-col gap-4">
-      <Field label="Eyebrow"><TextInput value={c.eyebrow ?? ""} onChange={(v) => update({ eyebrow: v })} /></Field>
-      <Field label="Title"><TextInput value={c.title} onChange={(v) => update({ title: v })} /></Field>
+      <Field label="Eyebrow" currentValue={c.eyebrow ?? ""} onAiRewrite={(v) => update({ eyebrow: v })}><TextInput value={c.eyebrow ?? ""} onChange={(v) => update({ eyebrow: v })} /></Field>
+      <Field label="Title" currentValue={c.title} onAiRewrite={(v) => update({ title: v })}><TextInput value={c.title} onChange={(v) => update({ title: v })} /></Field>
       <div className="border-t border-border-subtle pt-4">
         <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-text-tertiary">Testimonials</p>
         {c.testimonials.map((t, idx) => (
@@ -185,8 +195,8 @@ function PricingProps({ section }: { section: Extract<Section, { type: "pricing"
 
   return (
     <div className="flex flex-col gap-4">
-      <Field label="Eyebrow"><TextInput value={c.eyebrow ?? ""} onChange={(v) => update({ eyebrow: v })} /></Field>
-      <Field label="Title"><TextInput value={c.title} onChange={(v) => update({ title: v })} /></Field>
+      <Field label="Eyebrow" currentValue={c.eyebrow ?? ""} onAiRewrite={(v) => update({ eyebrow: v })}><TextInput value={c.eyebrow ?? ""} onChange={(v) => update({ eyebrow: v })} /></Field>
+      <Field label="Title" currentValue={c.title} onAiRewrite={(v) => update({ title: v })}><TextInput value={c.title} onChange={(v) => update({ title: v })} /></Field>
       <div className="border-t border-border-subtle pt-4">
         <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-text-tertiary">Plans</p>
         {c.plans.map((plan, idx) => (
@@ -222,9 +232,9 @@ function CtaProps({ section }: { section: Extract<Section, { type: "cta" }> }) {
 
   return (
     <div className="flex flex-col gap-4">
-      <Field label="Title"><TextArea rows={2} value={c.title} onChange={(v) => update({ title: v })} /></Field>
-      <Field label="Description"><TextArea value={c.description ?? ""} onChange={(v) => update({ description: v })} /></Field>
-      <Field label="CTA button text"><TextInput value={c.ctaText} onChange={(v) => update({ ctaText: v })} /></Field>
+      <Field label="Title" currentValue={c.title} onAiRewrite={(v) => update({ title: v })}><TextArea rows={2} value={c.title} onChange={(v) => update({ title: v })} /></Field>
+      <Field label="Description" currentValue={c.description ?? ""} onAiRewrite={(v) => update({ description: v })}><TextArea value={c.description ?? ""} onChange={(v) => update({ description: v })} /></Field>
+      <Field label="CTA button text" currentValue={c.ctaText} onAiRewrite={(v) => update({ ctaText: v })}><TextInput value={c.ctaText} onChange={(v) => update({ ctaText: v })} /></Field>
       <Field label="CTA link"><TextInput value={c.ctaLink ?? ""} onChange={(v) => update({ ctaLink: v })} placeholder="https://…" /></Field>
     </div>
   );
@@ -239,8 +249,8 @@ function FaqProps({ section }: { section: Extract<Section, { type: "faq" }> }) {
 
   return (
     <div className="flex flex-col gap-4">
-      <Field label="Eyebrow"><TextInput value={c.eyebrow ?? ""} onChange={(v) => update({ eyebrow: v })} /></Field>
-      <Field label="Title"><TextInput value={c.title} onChange={(v) => update({ title: v })} /></Field>
+      <Field label="Eyebrow" currentValue={c.eyebrow ?? ""} onAiRewrite={(v) => update({ eyebrow: v })}><TextInput value={c.eyebrow ?? ""} onChange={(v) => update({ eyebrow: v })} /></Field>
+      <Field label="Title" currentValue={c.title} onAiRewrite={(v) => update({ title: v })}><TextInput value={c.title} onChange={(v) => update({ title: v })} /></Field>
       <div className="border-t border-border-subtle pt-4">
         <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-text-tertiary">FAQ items</p>
         {c.items.map((item, idx) => (
@@ -272,8 +282,8 @@ function FooterProps({ section }: { section: Extract<Section, { type: "footer" }
 
   return (
     <div className="flex flex-col gap-4">
-      <Field label="Brand name"><TextInput value={c.brandName} onChange={(v) => update({ brandName: v })} /></Field>
-      <Field label="Copyright"><TextInput value={c.copyright} onChange={(v) => update({ copyright: v })} /></Field>
+      <Field label="Brand name" currentValue={c.brandName} onAiRewrite={(v) => update({ brandName: v })}><TextInput value={c.brandName} onChange={(v) => update({ brandName: v })} /></Field>
+      <Field label="Copyright" currentValue={c.copyright} onAiRewrite={(v) => update({ copyright: v })}><TextInput value={c.copyright} onChange={(v) => update({ copyright: v })} /></Field>
     </div>
   );
 }

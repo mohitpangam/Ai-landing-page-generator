@@ -21,3 +21,24 @@ export function getGeminiModel() {
     },
   });
 }
+
+export function getGeminiTextModel() {
+  const apiKey = process.env.GEMINI_API_KEY;
+
+  if (!apiKey || apiKey === "your-gemini-api-key") {
+    throw new Error(
+      "GEMINI_API_KEY is missing in .env.local. " +
+        "Please get a key at https://aistudio.google.com/app/apikey"
+    );
+  }
+
+  const genAI = new GoogleGenerativeAI(apiKey);
+
+  return genAI.getGenerativeModel({
+    model: "gemini-flash-latest",
+    generationConfig: {
+      responseMimeType: "application/json",
+      temperature: 0.8,
+    },
+  });
+}
