@@ -25,6 +25,7 @@ interface EditorActions {
   updateSectionContent: (sectionId: string, content: unknown) => void;
   moveSection: (fromIndex: number, toIndex: number) => void;
   deleteSection: (sectionId: string) => void;
+  addSection: (section: Section, index?: number) => void;
 
   // ── Theme / Meta ──
   updateTheme: (patch: Partial<ThemeTokens>) => void;
@@ -97,6 +98,25 @@ export const useEditorStore = create<EditorStore>((set, get) => ({
       ...pushUndo(state, { ...state.schema, sections }),
       selectedSectionId:
         state.selectedSectionId === sectionId ? null : state.selectedSectionId,
+    });
+  },
+
+  addSection: (section, index) => {
+    const state = get();
+    const sections = [...state.schema.sections];
+    if (typeof index === "number" && index >= 0 && index <= sections.length) {
+      sections.splice(index, 0, section);
+    } else {
+      const footerIdx = sections.findIndex((s) => s.type === "footer");
+      if (footerIdx !== -1) {
+        sections.splice(footerIdx, 0, section);
+      } else {
+        sections.push(section);
+      }
+    }
+    set({
+      ...pushUndo(state, { ...state.schema, sections }),
+      selectedSectionId: section.id,
     });
   },
 
