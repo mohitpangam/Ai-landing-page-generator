@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import type { FaqSection as FaqSectionProps } from "@/lib/schema/page";
+import { EditableText } from "@/components/editor/EditableText";
 
 interface Props {
   section: FaqSectionProps;
@@ -50,12 +51,14 @@ export function FaqSection({ section }: Props) {
                 className="h-px w-8"
                 style={{ backgroundColor: "var(--page-primary)" }}
               />
-              <span
+              <EditableText
+                sectionId={section.id}
+                updateFn={(v) => ({ ...content, eyebrow: v })}
+                value={content.eyebrow}
+                as="span"
                 className="text-xs font-semibold uppercase tracking-widest"
                 style={{ color: "var(--page-primary)" }}
-              >
-                {content.eyebrow}
-              </span>
+              />
               <span
                 className="h-px w-8"
                 style={{ backgroundColor: "var(--page-primary)" }}
@@ -63,17 +66,20 @@ export function FaqSection({ section }: Props) {
             </div>
           )}
 
-          <h2
+          <EditableText
+            sectionId={section.id}
+            updateFn={(v) => ({ ...content, title: v })}
+            value={content.title}
+            as="h2"
+            multiline
             className="text-3xl font-bold tracking-tight @sm:text-4xl"
             style={{ color: "var(--page-text-primary)" }}
-          >
-            {content.title}
-          </h2>
+          />
         </div>
 
         {/* Accordion */}
         <div className="mt-12 flex flex-col divide-y" style={{ borderColor: "var(--page-border-subtle)" }}>
-          {content.items.map((item) => {
+          {content.items.map((item, idx) => {
             const isOpen = openId === item.id;
             return (
               <div key={item.id} className="first:border-t" style={{ borderColor: "var(--page-border-subtle)" }}>
@@ -85,12 +91,17 @@ export function FaqSection({ section }: Props) {
                   aria-controls={`faq-answer-${item.id}`}
                   id={`faq-question-${item.id}`}
                 >
-                  <span
+                  <EditableText
+                    sectionId={section.id}
+                    updateFn={(v) => ({
+                      ...content,
+                      items: content.items.map((x, i) => (i === idx ? { ...x, question: v } : x)),
+                    })}
+                    value={item.question}
+                    as="span"
                     className="text-base font-semibold @sm:text-lg"
                     style={{ color: "var(--page-text-primary)" }}
-                  >
-                    {item.question}
-                  </span>
+                  />
                   <span style={{ color: "var(--page-primary)" }}>
                     <ChevronIcon open={isOpen} />
                   </span>
@@ -106,12 +117,18 @@ export function FaqSection({ section }: Props) {
                     opacity: isOpen ? 1 : 0,
                   }}
                 >
-                  <p
+                  <EditableText
+                    sectionId={section.id}
+                    updateFn={(v) => ({
+                      ...content,
+                      items: content.items.map((x, i) => (i === idx ? { ...x, answer: v } : x)),
+                    })}
+                    value={item.answer}
+                    as="p"
+                    multiline
                     className="pb-5 text-base leading-relaxed"
                     style={{ color: "var(--page-text-tertiary)" }}
-                  >
-                    {item.answer}
-                  </p>
+                  />
                 </div>
               </div>
             );

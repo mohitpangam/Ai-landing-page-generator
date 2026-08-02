@@ -1,4 +1,5 @@
 import type { PricingSection as PricingSectionProps } from "@/lib/schema/page";
+import { EditableText } from "@/components/editor/EditableText";
 
 interface Props {
   section: PricingSectionProps;
@@ -42,12 +43,14 @@ export function PricingSection({ section }: Props) {
                 className="h-px w-8"
                 style={{ backgroundColor: "var(--page-primary)" }}
               />
-              <span
+              <EditableText
+                sectionId={section.id}
+                updateFn={(v) => ({ ...content, eyebrow: v })}
+                value={content.eyebrow}
+                as="span"
                 className="text-xs font-semibold uppercase tracking-widest"
                 style={{ color: "var(--page-primary)" }}
-              >
-                {content.eyebrow}
-              </span>
+              />
               <span
                 className="h-px w-8"
                 style={{ backgroundColor: "var(--page-primary)" }}
@@ -55,20 +58,26 @@ export function PricingSection({ section }: Props) {
             </div>
           )}
 
-          <h2
+          <EditableText
+            sectionId={section.id}
+            updateFn={(v) => ({ ...content, title: v })}
+            value={content.title}
+            as="h2"
+            multiline
             className="text-3xl font-bold tracking-tight @sm:text-4xl"
             style={{ color: "var(--page-text-primary)" }}
-          >
-            {content.title}
-          </h2>
+          />
 
           {content.description && (
-            <p
+            <EditableText
+              sectionId={section.id}
+              updateFn={(v) => ({ ...content, description: v })}
+              value={content.description}
+              as="p"
+              multiline
               className="mt-4 text-lg leading-relaxed"
               style={{ color: "var(--page-text-tertiary)" }}
-            >
-              {content.description}
-            </p>
+            />
           )}
         </div>
 
@@ -78,7 +87,7 @@ export function PricingSection({ section }: Props) {
             content.plans.length === 1 ? "@sm:max-w-md @sm:mx-auto" : ""
           }`}
         >
-          {content.plans.map((plan) => (
+          {content.plans.map((plan, planIdx) => (
             <div
               key={plan.id}
               className="relative flex flex-1 flex-col gap-6 rounded-xl border p-8 transition-all duration-200 hover:shadow-lg"
@@ -107,38 +116,54 @@ export function PricingSection({ section }: Props) {
 
               {/* Plan name + description */}
               <div>
-                <h3
+                <EditableText
+                  sectionId={section.id}
+                  updateFn={(v) => ({
+                    ...content,
+                    plans: content.plans.map((p, i) => (i === planIdx ? { ...p, name: v } : p)),
+                  })}
+                  value={plan.name}
+                  as="h3"
                   className="text-lg font-semibold"
                   style={{
                     color: plan.isHighlighted ? "#ffffff" : "var(--page-text-primary)",
                   }}
-                >
-                  {plan.name}
-                </h3>
+                />
                 {plan.description && (
-                  <p
+                  <EditableText
+                    sectionId={section.id}
+                    updateFn={(v) => ({
+                      ...content,
+                      plans: content.plans.map((p, i) => (i === planIdx ? { ...p, description: v } : p)),
+                    })}
+                    value={plan.description}
+                    as="p"
+                    multiline
                     className="mt-1 text-sm leading-relaxed"
                     style={{
                       color: plan.isHighlighted
                         ? "rgba(255,255,255,0.75)"
                         : "var(--page-text-tertiary)",
                     }}
-                  >
-                    {plan.description}
-                  </p>
+                  />
                 )}
               </div>
 
               {/* Price */}
               <div className="flex items-end gap-1">
-                <span
+                <EditableText
+                  sectionId={section.id}
+                  updateFn={(v) => ({
+                    ...content,
+                    plans: content.plans.map((p, i) => (i === planIdx ? { ...p, price: v } : p)),
+                  })}
+                  value={plan.price}
+                  as="span"
                   className="text-5xl font-bold tracking-tight"
                   style={{
                     color: plan.isHighlighted ? "#ffffff" : "var(--page-text-primary)",
                   }}
-                >
-                  {plan.price}
-                </span>
+                />
                 {plan.period && (
                   <span
                     className="mb-1 text-sm"
@@ -148,15 +173,24 @@ export function PricingSection({ section }: Props) {
                         : "var(--page-text-tertiary)",
                     }}
                   >
-                    /{plan.period}
+                    /
+                    <EditableText
+                      sectionId={section.id}
+                      updateFn={(v) => ({
+                        ...content,
+                        plans: content.plans.map((p, i) => (i === planIdx ? { ...p, period: v } : p)),
+                      })}
+                      value={plan.period}
+                      as="span"
+                    />
                   </span>
                 )}
               </div>
 
               {/* Features */}
               <ul className="flex flex-col gap-3">
-                {plan.features.map((feature, idx) => (
-                  <li key={idx} className="flex items-start gap-3">
+                {plan.features.map((feature, featIdx) => (
+                  <li key={featIdx} className="flex items-start gap-3">
                     <span
                       style={{
                         color: plan.isHighlighted ? "rgba(255,255,255,0.9)" : "var(--page-primary)",
@@ -164,16 +198,25 @@ export function PricingSection({ section }: Props) {
                     >
                       <CheckIcon />
                     </span>
-                    <span
+                    <EditableText
+                      sectionId={section.id}
+                      updateFn={(v) => ({
+                        ...content,
+                        plans: content.plans.map((p, i) =>
+                          i === planIdx
+                            ? { ...p, features: p.features.map((f, fi) => (fi === featIdx ? v : f)) }
+                            : p
+                        ),
+                      })}
+                      value={feature}
+                      as="span"
                       className="text-sm leading-snug"
                       style={{
                         color: plan.isHighlighted
                           ? "rgba(255,255,255,0.85)"
                           : "var(--page-text-primary)",
                       }}
-                    >
-                      {feature}
-                    </span>
+                    />
                   </li>
                 ))}
               </ul>
@@ -188,7 +231,15 @@ export function PricingSection({ section }: Props) {
                   borderRadius: "var(--page-radius-button)",
                 }}
               >
-                {plan.ctaText}
+                <EditableText
+                  sectionId={section.id}
+                  updateFn={(v) => ({
+                    ...content,
+                    plans: content.plans.map((p, i) => (i === planIdx ? { ...p, ctaText: v } : p)),
+                  })}
+                  value={plan.ctaText}
+                  as="span"
+                />
               </a>
             </div>
           ))}

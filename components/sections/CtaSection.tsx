@@ -1,4 +1,5 @@
 import type { CtaSection as CtaSectionProps } from "@/lib/schema/page";
+import { EditableText } from "@/components/editor/EditableText";
 
 interface Props {
   section: CtaSectionProps;
@@ -22,14 +23,24 @@ export function CtaSection({ section }: Props) {
       />
 
       <div className="relative mx-auto max-w-3xl px-6 text-center @lg:px-8">
-        <h2 className="text-3xl font-bold tracking-tight text-white @sm:text-4xl @lg:text-5xl">
-          {content.title}
-        </h2>
+        <EditableText
+          sectionId={section.id}
+          updateFn={(v) => ({ ...content, title: v })}
+          value={content.title}
+          as="h2"
+          multiline
+          className="text-3xl font-bold tracking-tight text-white @sm:text-4xl @lg:text-5xl"
+        />
 
         {content.description && (
-          <p className="mx-auto mt-6 max-w-xl text-lg leading-relaxed text-white/70">
-            {content.description}
-          </p>
+          <EditableText
+            sectionId={section.id}
+            updateFn={(v) => ({ ...content, description: v })}
+            value={content.description}
+            as="p"
+            multiline
+            className="mx-auto mt-6 max-w-xl text-lg leading-relaxed text-white/70"
+          />
         )}
 
         <div className="mt-10">
@@ -41,7 +52,12 @@ export function CtaSection({ section }: Props) {
               borderRadius: "var(--page-radius-button)",
             }}
           >
-            {content.ctaText}
+            <EditableText
+              sectionId={section.id}
+              updateFn={(v) => ({ ...content, ctaText: v })}
+              value={content.ctaText}
+              as="span"
+            />
           </a>
         </div>
       </div>

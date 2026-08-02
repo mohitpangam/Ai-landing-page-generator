@@ -1,5 +1,6 @@
 import type { PageSchema, ThemeTokens } from "@/lib/schema/page";
 import { sectionRegistry } from "@/components/sections";
+import { PageRendererContext } from "@/components/PageRendererContext";
 
 // ─── Border radius map ─────────────────────────────────────────────────────────
 const RADIUS_MAP: Record<ThemeTokens["borderRadius"], string> = {
@@ -38,34 +39,38 @@ interface PageRendererProps {
    * The editor uses this to set a fixed viewport width for responsive preview.
    */
   className?: string;
+  isEditable?: boolean;
 }
 
-export function PageRenderer({ schema, className }: PageRendererProps) {
+export function PageRenderer({ schema, className, isEditable = false }: PageRendererProps) {
   const { theme, sections } = schema;
   const cssVars = buildPageCssVars(theme);
 
   return (
-    <div
-      className={`@container ${className ?? ""}`}
-      style={cssVars as React.CSSProperties}
-    >
-      {sections.map((section) => {
-        const Component = sectionRegistry[section.type];
+    <PageRendererContext.Provider value={{ isEditable }}>
+      <div
+        className={`@container ${className ?? ""}`}
+        style={cssVars as React.CSSProperties}
+      >
+        {sections.map((section) => {
+          const Component = sectionRegistry[section.type];
 
-        if (!Component) {
-          // Unknown section type — render a placeholder so the page doesn't break
-          return (
-            <div
-              key={section.id}
-              className="flex items-center justify-center py-12 text-sm text-gray-400"
-            >
-              Unknown section type: <code className="ml-1">{section.type}</code>
-            </div>
-          );
-        }
+          if (!Component) {
+            // Unknown section type — render a placeholder so the page doesn't break
+            return (
+              <div
+                key={section.id}
+                className="flex items-center justify-center py-12 text-sm text-gray-400"
+              >
+                Unknown section type: <code className="ml-1">{section.type}</code>
+              </div>
+            );
+          }
 
-        return <Component key={section.id} section={section} />;
-      })}
-    </div>
+          return <Component key={section.id} section={section} />;
+        })}
+      </div>
+    </PageRendererContext.Provider>
   );
 }
+

@@ -1,4 +1,5 @@
 import type { HeroSection as HeroSectionProps } from "@/lib/schema/page";
+import { EditableText } from "@/components/editor/EditableText";
 
 interface Props {
   section: HeroSectionProps;
@@ -37,12 +38,14 @@ export function HeroSection({ section }: Props) {
                   className="h-px w-8 flex-shrink-0"
                   style={{ backgroundColor: "var(--page-primary)" }}
                 />
-                <span
+                <EditableText
+                  sectionId={section.id}
+                  updateFn={(v) => ({ ...content, eyebrow: v })}
+                  value={content.eyebrow}
+                  as="span"
                   className="text-xs font-semibold uppercase tracking-widest"
                   style={{ color: "var(--page-primary)" }}
-                >
-                  {content.eyebrow}
-                </span>
+                />
                 <span
                   className="h-px w-8 flex-shrink-0"
                   style={{ backgroundColor: "var(--page-primary)" }}
@@ -51,20 +54,26 @@ export function HeroSection({ section }: Props) {
             )}
 
             {/* Headline */}
-            <h1
+            <EditableText
+              sectionId={section.id}
+              updateFn={(v) => ({ ...content, headline: v })}
+              value={content.headline}
+              as="h1"
+              multiline
               className="text-4xl font-bold leading-tight tracking-tight @sm:text-5xl @lg:text-6xl"
               style={{ color: "var(--page-text-primary)" }}
-            >
-              {content.headline}
-            </h1>
+            />
 
             {/* Subheadline */}
-            <p
+            <EditableText
+              sectionId={section.id}
+              updateFn={(v) => ({ ...content, subheadline: v })}
+              value={content.subheadline}
+              as="p"
+              multiline
               className="text-lg leading-relaxed @sm:text-xl"
               style={{ color: "var(--page-text-tertiary)" }}
-            >
-              {content.subheadline}
-            </p>
+            />
 
             {/* CTA buttons */}
             <div
@@ -78,7 +87,12 @@ export function HeroSection({ section }: Props) {
                   borderRadius: "var(--page-radius-button)",
                 }}
               >
-                {content.primaryCtaText}
+                <EditableText
+                  sectionId={section.id}
+                  updateFn={(v) => ({ ...content, primaryCtaText: v })}
+                  value={content.primaryCtaText}
+                  as="span"
+                />
               </a>
 
               {content.secondaryCtaText && (
@@ -91,7 +105,12 @@ export function HeroSection({ section }: Props) {
                     borderRadius: "var(--page-radius-button)",
                   }}
                 >
-                  {content.secondaryCtaText}
+                  <EditableText
+                    sectionId={section.id}
+                    updateFn={(v) => ({ ...content, secondaryCtaText: v })}
+                    value={content.secondaryCtaText}
+                    as="span"
+                  />
                 </a>
               )}
             </div>

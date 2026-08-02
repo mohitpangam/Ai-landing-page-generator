@@ -58,6 +58,7 @@ export function EditorCanvas() {
                 {/* Render single section through PageRenderer */}
                 <PageRenderer
                   schema={{ ...schema, sections: [section] }}
+                  isEditable={true}
                 />
               </div>
             );

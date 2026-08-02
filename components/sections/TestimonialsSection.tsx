@@ -1,4 +1,5 @@
 import type { TestimonialsSection as TestimonialsSectionProps } from "@/lib/schema/page";
+import { EditableText } from "@/components/editor/EditableText";
 
 interface Props {
   section: TestimonialsSectionProps;
@@ -30,12 +31,14 @@ export function TestimonialsSection({ section }: Props) {
                 className="h-px w-8"
                 style={{ backgroundColor: "var(--page-primary)" }}
               />
-              <span
+              <EditableText
+                sectionId={section.id}
+                updateFn={(v) => ({ ...content, eyebrow: v })}
+                value={content.eyebrow}
+                as="span"
                 className="text-xs font-semibold uppercase tracking-widest"
                 style={{ color: "var(--page-primary)" }}
-              >
-                {content.eyebrow}
-              </span>
+              />
               <span
                 className="h-px w-8"
                 style={{ backgroundColor: "var(--page-primary)" }}
@@ -43,17 +46,20 @@ export function TestimonialsSection({ section }: Props) {
             </div>
           )}
 
-          <h2
+          <EditableText
+            sectionId={section.id}
+            updateFn={(v) => ({ ...content, title: v })}
+            value={content.title}
+            as="h2"
+            multiline
             className="text-3xl font-bold tracking-tight @sm:text-4xl"
             style={{ color: "var(--page-text-primary)" }}
-          >
-            {content.title}
-          </h2>
+          />
         </div>
 
         {/* Cards — horizontal scroll on mobile, grid on desktop */}
         <div className="mt-16 flex gap-6 overflow-x-auto pb-4 @lg:grid @lg:grid-cols-3 @lg:overflow-visible @lg:pb-0 [&::-webkit-scrollbar]:hidden">
-          {content.testimonials.map((testimonial) => (
+          {content.testimonials.map((testimonial, idx) => (
             <div
               key={testimonial.id}
               className="flex w-72 flex-shrink-0 flex-col gap-4 rounded-xl border p-6 transition-all duration-200 hover:shadow-md @lg:w-auto"
@@ -72,12 +78,18 @@ export function TestimonialsSection({ section }: Props) {
               </div>
 
               {/* Quote */}
-              <p
+              <EditableText
+                sectionId={section.id}
+                updateFn={(v) => ({
+                  ...content,
+                  testimonials: content.testimonials.map((t, i) => (i === idx ? { ...t, quote: v } : t)),
+                })}
+                value={testimonial.quote}
+                as="p"
+                multiline
                 className="flex-1 text-base leading-relaxed"
                 style={{ color: "var(--page-text-primary)" }}
-              >
-                {testimonial.quote}
-              </p>
+              />
 
               {/* Author */}
               <div className="flex items-center gap-3 border-t pt-4" style={{ borderColor: "var(--page-border-subtle)" }}>
@@ -98,21 +110,29 @@ export function TestimonialsSection({ section }: Props) {
                 )}
 
                 <div>
-                  <p
+                  <EditableText
+                    sectionId={section.id}
+                    updateFn={(v) => ({
+                      ...content,
+                      testimonials: content.testimonials.map((t, i) => (i === idx ? { ...t, authorName: v } : t)),
+                    })}
+                    value={testimonial.authorName}
+                    as="p"
                     className="text-sm font-semibold"
                     style={{ color: "var(--page-text-primary)" }}
-                  >
-                    {testimonial.authorName}
-                  </p>
+                  />
                   {(testimonial.authorRole || testimonial.authorCompany) && (
-                    <p
+                    <EditableText
+                      sectionId={section.id}
+                      updateFn={(v) => ({
+                        ...content,
+                        testimonials: content.testimonials.map((t, i) => (i === idx ? { ...t, authorRole: v } : t)),
+                      })}
+                      value={[testimonial.authorRole, testimonial.authorCompany].filter(Boolean).join(", ")}
+                      as="p"
                       className="text-xs"
                       style={{ color: "var(--page-text-tertiary)" }}
-                    >
-                      {[testimonial.authorRole, testimonial.authorCompany]
-                        .filter(Boolean)
-                        .join(", ")}
-                    </p>
+                    />
                   )}
                 </div>
               </div>
