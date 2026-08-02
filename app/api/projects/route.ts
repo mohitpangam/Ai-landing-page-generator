@@ -9,6 +9,15 @@ export async function GET(req: Request) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
+    // Ensure isPublished column exists in Neon DB
+    try {
+      await db.$executeRawUnsafe(
+        'ALTER TABLE "Project" ADD COLUMN IF NOT EXISTS "isPublished" BOOLEAN DEFAULT false;'
+      );
+    } catch (colErr) {
+      console.warn("isPublished column check:", colErr);
+    }
+
     const { searchParams } = new URL(req.url);
     const search = searchParams.get("search")?.trim() ?? "";
     const statusParam = searchParams.get("status")?.toUpperCase();

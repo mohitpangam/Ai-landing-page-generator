@@ -16,6 +16,16 @@ export async function GET(_req: Request, { params }: Params) {
     }
 
     const { id } = await params;
+
+    // Ensure the isPublished column exists in Neon DB
+    try {
+      await db.$executeRawUnsafe(
+        'ALTER TABLE "Project" ADD COLUMN IF NOT EXISTS "isPublished" BOOLEAN DEFAULT false;'
+      );
+    } catch (colErr) {
+      console.warn("isPublished column check:", colErr);
+    }
+
     const project = await db.project.findUnique({
       where: { id },
       select: { id: true, userId: true, slug: true, isPublished: true },
@@ -51,6 +61,15 @@ export async function POST(req: Request, { params }: Params) {
     const { id } = await params;
     const body = await req.json().catch(() => ({}));
     const publishState = body.publish ?? true; // boolean
+
+    // Ensure the isPublished column exists in Neon DB
+    try {
+      await db.$executeRawUnsafe(
+        'ALTER TABLE "Project" ADD COLUMN IF NOT EXISTS "isPublished" BOOLEAN DEFAULT false;'
+      );
+    } catch (colErr) {
+      console.warn("isPublished column check:", colErr);
+    }
 
     const project = await db.project.findUnique({
       where: { id },
