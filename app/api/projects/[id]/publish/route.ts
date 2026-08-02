@@ -6,6 +6,14 @@ interface Params {
   params: Promise<{ id: string }>;
 }
 
+function ensureSlug(name: string, id: string): string {
+  const base = name
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "");
+  return `${base || "landing-page"}-${id.slice(-4)}`;
+}
+
 // GET /api/projects/:id/publish
 // Returns current publishing status & live public URL
 export async function GET(_req: Request, { params }: Params) {
@@ -19,7 +27,7 @@ export async function GET(_req: Request, { params }: Params) {
 
     const project = await db.project.findUnique({
       where: { id },
-      select: { id: true, userId: true, slug: true, isPublished: true },
+      select: { id: true, userId: true, name: true, slug: true, isPublished: true },
     });
 
     if (!project) {
@@ -29,14 +37,27 @@ export async function GET(_req: Request, { params }: Params) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 
+    const slug = project.slug || ensureSlug(project.name, project.id);
+
+    // Auto-fix empty slug if needed
+    if (!project.slug) {
+      await db.project.update({
+        where: { id },
+        data: { slug },
+      });
+    }
+
     return NextResponse.json({
       isPublished: project.isPublished ?? false,
-      slug: project.slug,
-      publishedUrl: `/p/${project.slug}`,
+      slug,
+      publishedUrl: `/p/${slug}`,
     });
-  } catch (error) {
+  } catch (error: any) {
     console.error("GET /api/projects/:id/publish error:", error);
-    return NextResponse.json({ error: "Internal error" }, { status: 500 });
+    return NextResponse.json(
+      { error: error?.message || "Internal error" },
+      { status: 500 }
+    );
   }
 }
 
@@ -64,9 +85,14 @@ export async function POST(req: Request, { params }: Params) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 
+    const slug = project.slug || ensureSlug(project.name, project.id);
+
     const updated = await db.project.update({
       where: { id },
-      data: { isPublished: Boolean(publishState) },
+      data: {
+        isPublished: Boolean(publishState),
+        slug,
+      },
       select: { id: true, slug: true, isPublished: true },
     });
 
@@ -75,8 +101,11 @@ export async function POST(req: Request, { params }: Params) {
       slug: updated.slug,
       publishedUrl: `/p/${updated.slug}`,
     });
-  } catch (error) {
+  } catch (error: any) {
     console.error("POST /api/projects/:id/publish error:", error);
-    return NextResponse.json({ error: "Publish failed" }, { status: 500 });
+    return NextResponse.json(
+      { error: error?.message || "Publish failed" },
+      { status: 500 }
+    );
   }
 }
