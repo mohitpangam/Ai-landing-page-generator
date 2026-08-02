@@ -64,6 +64,19 @@ export async function generateNextjsZip(
   };
   zip.file("tsconfig.json", JSON.stringify(tsconfig, null, 2));
 
+  // postcss.config.mjs (critical for Tailwind v4 PostCSS compilation)
+  zip.file(
+    "postcss.config.mjs",
+    `const config = {
+  plugins: {
+    "@tailwindcss/postcss": {},
+  },
+};
+
+export default config;
+`
+  );
+
   // README.md
   zip.file(
     "README.md",
