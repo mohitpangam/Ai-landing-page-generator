@@ -30,6 +30,7 @@ export type ProjectMinAggregateOutputType = {
   name: string | null
   slug: string | null
   status: $Enums.ProjectStatus | null
+  isPublished: boolean | null
   prompt: string | null
   thumbnailUrl: string | null
   currentVersionId: string | null
@@ -43,6 +44,7 @@ export type ProjectMaxAggregateOutputType = {
   name: string | null
   slug: string | null
   status: $Enums.ProjectStatus | null
+  isPublished: boolean | null
   prompt: string | null
   thumbnailUrl: string | null
   currentVersionId: string | null
@@ -56,6 +58,7 @@ export type ProjectCountAggregateOutputType = {
   name: number
   slug: number
   status: number
+  isPublished: number
   prompt: number
   thumbnailUrl: number
   currentVersionId: number
@@ -71,6 +74,7 @@ export type ProjectMinAggregateInputType = {
   name?: true
   slug?: true
   status?: true
+  isPublished?: true
   prompt?: true
   thumbnailUrl?: true
   currentVersionId?: true
@@ -84,6 +88,7 @@ export type ProjectMaxAggregateInputType = {
   name?: true
   slug?: true
   status?: true
+  isPublished?: true
   prompt?: true
   thumbnailUrl?: true
   currentVersionId?: true
@@ -97,6 +102,7 @@ export type ProjectCountAggregateInputType = {
   name?: true
   slug?: true
   status?: true
+  isPublished?: true
   prompt?: true
   thumbnailUrl?: true
   currentVersionId?: true
@@ -183,6 +189,7 @@ export type ProjectGroupByOutputType = {
   name: string
   slug: string
   status: $Enums.ProjectStatus
+  isPublished: boolean
   prompt: string
   thumbnailUrl: string | null
   currentVersionId: string | null
@@ -217,6 +224,7 @@ export type ProjectWhereInput = {
   name?: Prisma.StringFilter<"Project"> | string
   slug?: Prisma.StringFilter<"Project"> | string
   status?: Prisma.EnumProjectStatusFilter<"Project"> | $Enums.ProjectStatus
+  isPublished?: Prisma.BoolFilter<"Project"> | boolean
   prompt?: Prisma.StringFilter<"Project"> | string
   thumbnailUrl?: Prisma.StringNullableFilter<"Project"> | string | null
   currentVersionId?: Prisma.StringNullableFilter<"Project"> | string | null
@@ -234,6 +242,7 @@ export type ProjectOrderByWithRelationInput = {
   name?: Prisma.SortOrder
   slug?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  isPublished?: Prisma.SortOrder
   prompt?: Prisma.SortOrder
   thumbnailUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   currentVersionId?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -254,6 +263,7 @@ export type ProjectWhereUniqueInput = Prisma.AtLeast<{
   userId?: Prisma.StringFilter<"Project"> | string
   name?: Prisma.StringFilter<"Project"> | string
   status?: Prisma.EnumProjectStatusFilter<"Project"> | $Enums.ProjectStatus
+  isPublished?: Prisma.BoolFilter<"Project"> | boolean
   prompt?: Prisma.StringFilter<"Project"> | string
   thumbnailUrl?: Prisma.StringNullableFilter<"Project"> | string | null
   currentVersionId?: Prisma.StringNullableFilter<"Project"> | string | null
@@ -271,6 +281,7 @@ export type ProjectOrderByWithAggregationInput = {
   name?: Prisma.SortOrder
   slug?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  isPublished?: Prisma.SortOrder
   prompt?: Prisma.SortOrder
   thumbnailUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   currentVersionId?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -290,6 +301,7 @@ export type ProjectScalarWhereWithAggregatesInput = {
   name?: Prisma.StringWithAggregatesFilter<"Project"> | string
   slug?: Prisma.StringWithAggregatesFilter<"Project"> | string
   status?: Prisma.EnumProjectStatusWithAggregatesFilter<"Project"> | $Enums.ProjectStatus
+  isPublished?: Prisma.BoolWithAggregatesFilter<"Project"> | boolean
   prompt?: Prisma.StringWithAggregatesFilter<"Project"> | string
   thumbnailUrl?: Prisma.StringNullableWithAggregatesFilter<"Project"> | string | null
   currentVersionId?: Prisma.StringNullableWithAggregatesFilter<"Project"> | string | null
@@ -302,6 +314,7 @@ export type ProjectCreateInput = {
   name: string
   slug: string
   status?: $Enums.ProjectStatus
+  isPublished?: boolean
   prompt: string
   thumbnailUrl?: string | null
   currentVersionId?: string | null
@@ -319,6 +332,7 @@ export type ProjectUncheckedCreateInput = {
   name: string
   slug: string
   status?: $Enums.ProjectStatus
+  isPublished?: boolean
   prompt: string
   thumbnailUrl?: string | null
   currentVersionId?: string | null
@@ -334,6 +348,7 @@ export type ProjectUpdateInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus
+  isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
   prompt?: Prisma.StringFieldUpdateOperationsInput | string
   thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   currentVersionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -351,6 +366,7 @@ export type ProjectUncheckedUpdateInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus
+  isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
   prompt?: Prisma.StringFieldUpdateOperationsInput | string
   thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   currentVersionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -367,6 +383,7 @@ export type ProjectCreateManyInput = {
   name: string
   slug: string
   status?: $Enums.ProjectStatus
+  isPublished?: boolean
   prompt: string
   thumbnailUrl?: string | null
   currentVersionId?: string | null
@@ -379,6 +396,7 @@ export type ProjectUpdateManyMutationInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus
+  isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
   prompt?: Prisma.StringFieldUpdateOperationsInput | string
   thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   currentVersionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -392,6 +410,7 @@ export type ProjectUncheckedUpdateManyInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus
+  isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
   prompt?: Prisma.StringFieldUpdateOperationsInput | string
   thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   currentVersionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -415,6 +434,7 @@ export type ProjectCountOrderByAggregateInput = {
   name?: Prisma.SortOrder
   slug?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  isPublished?: Prisma.SortOrder
   prompt?: Prisma.SortOrder
   thumbnailUrl?: Prisma.SortOrder
   currentVersionId?: Prisma.SortOrder
@@ -428,6 +448,7 @@ export type ProjectMaxOrderByAggregateInput = {
   name?: Prisma.SortOrder
   slug?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  isPublished?: Prisma.SortOrder
   prompt?: Prisma.SortOrder
   thumbnailUrl?: Prisma.SortOrder
   currentVersionId?: Prisma.SortOrder
@@ -441,6 +462,7 @@ export type ProjectMinOrderByAggregateInput = {
   name?: Prisma.SortOrder
   slug?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  isPublished?: Prisma.SortOrder
   prompt?: Prisma.SortOrder
   thumbnailUrl?: Prisma.SortOrder
   currentVersionId?: Prisma.SortOrder
@@ -499,6 +521,10 @@ export type EnumProjectStatusFieldUpdateOperationsInput = {
   set?: $Enums.ProjectStatus
 }
 
+export type BoolFieldUpdateOperationsInput = {
+  set?: boolean
+}
+
 export type ProjectCreateNestedOneWithoutVersionsInput = {
   create?: Prisma.XOR<Prisma.ProjectCreateWithoutVersionsInput, Prisma.ProjectUncheckedCreateWithoutVersionsInput>
   connectOrCreate?: Prisma.ProjectCreateOrConnectWithoutVersionsInput
@@ -546,6 +572,7 @@ export type ProjectCreateWithoutUserInput = {
   name: string
   slug: string
   status?: $Enums.ProjectStatus
+  isPublished?: boolean
   prompt: string
   thumbnailUrl?: string | null
   currentVersionId?: string | null
@@ -561,6 +588,7 @@ export type ProjectUncheckedCreateWithoutUserInput = {
   name: string
   slug: string
   status?: $Enums.ProjectStatus
+  isPublished?: boolean
   prompt: string
   thumbnailUrl?: string | null
   currentVersionId?: string | null
@@ -606,6 +634,7 @@ export type ProjectScalarWhereInput = {
   name?: Prisma.StringFilter<"Project"> | string
   slug?: Prisma.StringFilter<"Project"> | string
   status?: Prisma.EnumProjectStatusFilter<"Project"> | $Enums.ProjectStatus
+  isPublished?: Prisma.BoolFilter<"Project"> | boolean
   prompt?: Prisma.StringFilter<"Project"> | string
   thumbnailUrl?: Prisma.StringNullableFilter<"Project"> | string | null
   currentVersionId?: Prisma.StringNullableFilter<"Project"> | string | null
@@ -618,6 +647,7 @@ export type ProjectCreateWithoutVersionsInput = {
   name: string
   slug: string
   status?: $Enums.ProjectStatus
+  isPublished?: boolean
   prompt: string
   thumbnailUrl?: string | null
   currentVersionId?: string | null
@@ -634,6 +664,7 @@ export type ProjectUncheckedCreateWithoutVersionsInput = {
   name: string
   slug: string
   status?: $Enums.ProjectStatus
+  isPublished?: boolean
   prompt: string
   thumbnailUrl?: string | null
   currentVersionId?: string | null
@@ -664,6 +695,7 @@ export type ProjectUpdateWithoutVersionsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus
+  isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
   prompt?: Prisma.StringFieldUpdateOperationsInput | string
   thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   currentVersionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -680,6 +712,7 @@ export type ProjectUncheckedUpdateWithoutVersionsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus
+  isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
   prompt?: Prisma.StringFieldUpdateOperationsInput | string
   thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   currentVersionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -694,6 +727,7 @@ export type ProjectCreateWithoutSeoInput = {
   name: string
   slug: string
   status?: $Enums.ProjectStatus
+  isPublished?: boolean
   prompt: string
   thumbnailUrl?: string | null
   currentVersionId?: string | null
@@ -710,6 +744,7 @@ export type ProjectUncheckedCreateWithoutSeoInput = {
   name: string
   slug: string
   status?: $Enums.ProjectStatus
+  isPublished?: boolean
   prompt: string
   thumbnailUrl?: string | null
   currentVersionId?: string | null
@@ -740,6 +775,7 @@ export type ProjectUpdateWithoutSeoInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus
+  isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
   prompt?: Prisma.StringFieldUpdateOperationsInput | string
   thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   currentVersionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -756,6 +792,7 @@ export type ProjectUncheckedUpdateWithoutSeoInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus
+  isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
   prompt?: Prisma.StringFieldUpdateOperationsInput | string
   thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   currentVersionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -770,6 +807,7 @@ export type ProjectCreateWithoutExportsInput = {
   name: string
   slug: string
   status?: $Enums.ProjectStatus
+  isPublished?: boolean
   prompt: string
   thumbnailUrl?: string | null
   currentVersionId?: string | null
@@ -786,6 +824,7 @@ export type ProjectUncheckedCreateWithoutExportsInput = {
   name: string
   slug: string
   status?: $Enums.ProjectStatus
+  isPublished?: boolean
   prompt: string
   thumbnailUrl?: string | null
   currentVersionId?: string | null
@@ -816,6 +855,7 @@ export type ProjectUpdateWithoutExportsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus
+  isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
   prompt?: Prisma.StringFieldUpdateOperationsInput | string
   thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   currentVersionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -832,6 +872,7 @@ export type ProjectUncheckedUpdateWithoutExportsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus
+  isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
   prompt?: Prisma.StringFieldUpdateOperationsInput | string
   thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   currentVersionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -846,6 +887,7 @@ export type ProjectCreateManyUserInput = {
   name: string
   slug: string
   status?: $Enums.ProjectStatus
+  isPublished?: boolean
   prompt: string
   thumbnailUrl?: string | null
   currentVersionId?: string | null
@@ -858,6 +900,7 @@ export type ProjectUpdateWithoutUserInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus
+  isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
   prompt?: Prisma.StringFieldUpdateOperationsInput | string
   thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   currentVersionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -873,6 +916,7 @@ export type ProjectUncheckedUpdateWithoutUserInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus
+  isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
   prompt?: Prisma.StringFieldUpdateOperationsInput | string
   thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   currentVersionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -888,6 +932,7 @@ export type ProjectUncheckedUpdateManyWithoutUserInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus
+  isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
   prompt?: Prisma.StringFieldUpdateOperationsInput | string
   thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   currentVersionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -941,6 +986,7 @@ export type ProjectSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   name?: boolean
   slug?: boolean
   status?: boolean
+  isPublished?: boolean
   prompt?: boolean
   thumbnailUrl?: boolean
   currentVersionId?: boolean
@@ -959,6 +1005,7 @@ export type ProjectSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   name?: boolean
   slug?: boolean
   status?: boolean
+  isPublished?: boolean
   prompt?: boolean
   thumbnailUrl?: boolean
   currentVersionId?: boolean
@@ -973,6 +1020,7 @@ export type ProjectSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   name?: boolean
   slug?: boolean
   status?: boolean
+  isPublished?: boolean
   prompt?: boolean
   thumbnailUrl?: boolean
   currentVersionId?: boolean
@@ -987,6 +1035,7 @@ export type ProjectSelectScalar = {
   name?: boolean
   slug?: boolean
   status?: boolean
+  isPublished?: boolean
   prompt?: boolean
   thumbnailUrl?: boolean
   currentVersionId?: boolean
@@ -994,7 +1043,7 @@ export type ProjectSelectScalar = {
   updatedAt?: boolean
 }
 
-export type ProjectOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "name" | "slug" | "status" | "prompt" | "thumbnailUrl" | "currentVersionId" | "createdAt" | "updatedAt", ExtArgs["result"]["project"]>
+export type ProjectOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "name" | "slug" | "status" | "isPublished" | "prompt" | "thumbnailUrl" | "currentVersionId" | "createdAt" | "updatedAt", ExtArgs["result"]["project"]>
 export type ProjectInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   versions?: boolean | Prisma.Project$versionsArgs<ExtArgs>
@@ -1023,6 +1072,7 @@ export type $ProjectPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     name: string
     slug: string
     status: $Enums.ProjectStatus
+    isPublished: boolean
     prompt: string
     thumbnailUrl: string | null
     currentVersionId: string | null
@@ -1460,6 +1510,7 @@ export interface ProjectFieldRefs {
   readonly name: Prisma.FieldRef<"Project", 'String'>
   readonly slug: Prisma.FieldRef<"Project", 'String'>
   readonly status: Prisma.FieldRef<"Project", 'ProjectStatus'>
+  readonly isPublished: Prisma.FieldRef<"Project", 'Boolean'>
   readonly prompt: Prisma.FieldRef<"Project", 'String'>
   readonly thumbnailUrl: Prisma.FieldRef<"Project", 'String'>
   readonly currentVersionId: Prisma.FieldRef<"Project", 'String'>

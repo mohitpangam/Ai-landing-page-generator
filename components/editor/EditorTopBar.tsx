@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useEditorStore } from "@/lib/editor/store";
 import { VersionHistoryDrawer } from "./VersionHistoryDrawer";
 import { ExportModal } from "./ExportModal";
+import { PublishModal } from "./PublishModal";
 
 interface Props {
   projectName: string;
@@ -49,6 +50,7 @@ export function EditorTopBar({ projectName, user }: Props) {
     useEditorStore();
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
   const [isExportOpen, setIsExportOpen] = useState(false);
+  const [isPublishOpen, setIsPublishOpen] = useState(false);
 
   const saveLabel =
     saveStatus === "saving"
@@ -188,6 +190,20 @@ export function EditorTopBar({ projectName, user }: Props) {
             Export
           </button>
 
+          {/* Publish Button */}
+          <button
+            id="publish-btn"
+            type="button"
+            onClick={() => setIsPublishOpen(true)}
+            title="Publish Page"
+            className="inline-flex items-center gap-1.5 rounded-lg bg-brand-primary px-3.5 py-1.5 text-xs font-semibold text-white shadow-xs hover:bg-brand-primary-hover active:scale-95 transition-all"
+          >
+            <svg viewBox="0 0 16 16" className="h-3.5 w-3.5" fill="none" aria-hidden="true">
+              <path d="M8 2l4 4m-4-4L4 6m4-4v10M2 14h12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+            Publish
+          </button>
+
           {/* User avatar */}
           {user.image ? (
             // eslint-disable-next-line @next/next/no-img-element
@@ -215,6 +231,12 @@ export function EditorTopBar({ projectName, user }: Props) {
       <ExportModal
         isOpen={isExportOpen}
         onClose={() => setIsExportOpen(false)}
+      />
+
+      {/* Publish Modal */}
+      <PublishModal
+        isOpen={isPublishOpen}
+        onClose={() => setIsPublishOpen(false)}
       />
     </>
   );

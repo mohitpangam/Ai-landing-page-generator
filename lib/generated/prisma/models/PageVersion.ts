@@ -353,10 +353,6 @@ export type PageVersionUncheckedUpdateManyWithoutProjectNestedInput = {
   deleteMany?: Prisma.PageVersionScalarWhereInput | Prisma.PageVersionScalarWhereInput[]
 }
 
-export type BoolFieldUpdateOperationsInput = {
-  set?: boolean
-}
-
 export type PageVersionCreateWithoutProjectInput = {
   id?: string
   schema: Prisma.JsonNullValueInput | runtime.InputJsonValue

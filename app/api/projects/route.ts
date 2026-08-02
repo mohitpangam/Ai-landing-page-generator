@@ -38,6 +38,7 @@ export async function GET(req: Request) {
         name: true,
         slug: true,
         status: true,
+        isPublished: true,
         thumbnailUrl: true,
         prompt: true,
         createdAt: true,

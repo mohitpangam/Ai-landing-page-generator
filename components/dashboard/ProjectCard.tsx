@@ -9,6 +9,7 @@ interface Project {
   name: string;
   slug: string;
   status: string;
+  isPublished?: boolean;
   thumbnailUrl?: string | null;
   prompt: string;
   updatedAt: string;
@@ -136,7 +137,7 @@ export function ProjectCard({
       {/* Thumbnail — links to editor */}
       <Link
         href={`/editor/${project.id}`}
-        className="block"
+        className="block relative"
         tabIndex={-1}
         aria-label={`Open ${project.name} in editor`}
       >
@@ -149,6 +150,11 @@ export function ProjectCard({
           />
         ) : (
           <ThumbnailPlaceholder projectId={project.id} name={project.name} />
+        )}
+        {project.isPublished && (
+          <span className="absolute top-2.5 right-2.5 rounded-full bg-emerald-500 px-2 py-0.5 text-[10px] font-bold text-white shadow-md">
+            Live ●
+          </span>
         )}
       </Link>
 
@@ -183,12 +189,14 @@ export function ProjectCard({
           <div className="flex items-center gap-2">
             <span
               className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium ${
-                project.status === "ARCHIVED"
+                project.isPublished
+                  ? "bg-emerald-500/10 text-emerald-600"
+                  : project.status === "ARCHIVED"
                   ? "bg-gray-100 text-gray-500"
                   : "bg-surface-brand text-brand-primary"
               }`}
             >
-              {project.status === "ARCHIVED" ? "Archived" : "Active"}
+              {project.isPublished ? "Live" : project.status === "ARCHIVED" ? "Archived" : "Active"}
             </span>
             <span className="text-xs text-text-tertiary">{timeAgo(project.updatedAt)}</span>
           </div>
