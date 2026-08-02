@@ -12,6 +12,7 @@ export function generateStaticHtml(schema: PageSchema): string {
   const { meta, theme, sections } = schema;
   const radius = RADIUS_MAP[theme.borderRadius] ?? "8px";
 
+  const isDark = theme.mode === "dark";
   const cssVars = `
     --page-primary: ${theme.primary};
     --page-primary-hover: ${theme.primaryHover};
@@ -21,7 +22,7 @@ export function generateStaticHtml(schema: PageSchema): string {
     --page-text-primary: ${theme.textPrimary};
     --page-text-tertiary: ${theme.textTertiary};
     --page-text-accent: ${theme.textAccent};
-    --page-border-subtle: rgba(0,0,0,0.1);
+    --page-border-subtle: ${isDark ? "rgba(255,255,255,0.12)" : "rgba(0,0,0,0.1)"};
     --page-radius-button: ${radius};
     --page-radius-card: ${radius};
   `;

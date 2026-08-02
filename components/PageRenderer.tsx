@@ -17,6 +17,7 @@ const RADIUS_MAP: Record<ThemeTokens["borderRadius"], string> = {
 // Prefixed with --page-* so they NEVER collide with the app's own --brand-* tokens.
 function buildPageCssVars(theme: ThemeTokens): Record<string, string> {
   const radius = RADIUS_MAP[theme.borderRadius] ?? "8px";
+  const isDark = theme.mode === "dark";
   return {
     "--page-primary": theme.primary,
     "--page-primary-hover": theme.primaryHover,
@@ -26,7 +27,7 @@ function buildPageCssVars(theme: ThemeTokens): Record<string, string> {
     "--page-text-primary": theme.textPrimary,
     "--page-text-tertiary": theme.textTertiary,
     "--page-text-accent": theme.textAccent,
-    "--page-border-subtle": "rgba(0,0,0,0.1)",
+    "--page-border-subtle": isDark ? "rgba(255,255,255,0.12)" : "rgba(0,0,0,0.1)",
     "--page-radius-button": radius,
     "--page-radius-card": radius,
   };

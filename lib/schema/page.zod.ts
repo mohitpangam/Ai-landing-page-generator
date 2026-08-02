@@ -10,6 +10,7 @@ export const ThemeTokensSchema = z.object({
   textTertiary: z.string(),
   textAccent: z.string(),
   borderRadius: z.enum(["none", "sm", "md", "lg", "full"]),
+  mode: z.enum(["light", "dark"]).optional(),
 });
 
 export const HeroContentSchema = z.object({

@@ -309,17 +309,79 @@ const RADII: { label: string; value: ThemeTokens["borderRadius"] }[] = [
 function ThemeTab() {
   const { schema, updateTheme } = useEditorStore();
   const theme = schema.theme;
+  const isDark = theme.mode === "dark";
+
+  const handleModeChange = (mode: "light" | "dark") => {
+    if (mode === "dark") {
+      updateTheme({
+        mode: "dark",
+        surfaceBase: "#0F172A",
+        surfaceDark: "#020617",
+        surfaceBrand: "#1E293B",
+        textPrimary: "#F8FAFC",
+        textTertiary: "#94A3B8",
+      });
+    } else {
+      updateTheme({
+        mode: "light",
+        surfaceBase: "#FFFFFF",
+        surfaceDark: "#0B0F19",
+        surfaceBrand: "#F8FAFC",
+        textPrimary: "#0F172A",
+        textTertiary: "#64748B",
+      });
+    }
+  };
+
+  const handleCustomColor = (colorHex: string) => {
+    updateTheme({
+      primary: colorHex,
+      primaryHover: colorHex,
+      textAccent: colorHex,
+    });
+  };
 
   return (
     <div className="flex flex-col gap-6">
-      {/* Color swatches */}
+      {/* Theme Mode Toggle (Light vs Dark) */}
       <div>
         <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-text-tertiary">
-          Primary colour
+          Appearance Mode
+        </p>
+        <div className="grid grid-cols-2 gap-2 rounded-xl border border-border-subtle bg-surface-brand p-1">
+          <button
+            type="button"
+            onClick={() => handleModeChange("light")}
+            className={`flex items-center justify-center gap-2 rounded-lg py-2 text-xs font-semibold transition-all ${
+              !isDark
+                ? "bg-surface-base text-text-primary shadow-sm ring-1 ring-border-subtle"
+                : "text-text-tertiary hover:text-text-primary"
+            }`}
+          >
+            <span>☀️</span> Light Mode
+          </button>
+          <button
+            type="button"
+            onClick={() => handleModeChange("dark")}
+            className={`flex items-center justify-center gap-2 rounded-lg py-2 text-xs font-semibold transition-all ${
+              isDark
+                ? "bg-slate-900 text-white shadow-sm ring-1 ring-slate-700"
+                : "text-text-tertiary hover:text-text-primary"
+            }`}
+          >
+            <span>🌙</span> Dark Mode
+          </button>
+        </div>
+      </div>
+
+      {/* Primary Color Swatches */}
+      <div>
+        <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-text-tertiary">
+          Primary Accent Colour
         </p>
         <div className="grid grid-cols-3 gap-2">
           {SWATCHES.map((swatch) => {
-            const isActive = theme.primary === swatch.value;
+            const isActive = theme.primary.toUpperCase() === swatch.value.toUpperCase();
             return (
               <button
                 key={swatch.value}
@@ -348,6 +410,27 @@ function ThemeTab() {
               </button>
             );
           })}
+        </div>
+
+        {/* Custom Color Input */}
+        <div className="mt-3 flex items-center gap-2 border-t border-border-subtle pt-3">
+          <label className="text-xs text-text-tertiary font-medium">Custom HEX:</label>
+          <div className="flex items-center gap-2 flex-1">
+            <input
+              type="color"
+              value={theme.primary.startsWith("#") ? theme.primary : "#3D5AFE"}
+              onChange={(e) => handleCustomColor(e.target.value)}
+              className="h-7 w-8 cursor-pointer rounded border border-border-subtle bg-transparent p-0"
+              title="Pick a custom color"
+            />
+            <input
+              type="text"
+              value={theme.primary}
+              onChange={(e) => handleCustomColor(e.target.value)}
+              placeholder="#3D5AFE"
+              className="w-full rounded-lg border border-border-subtle bg-surface-base px-2.5 py-1 text-xs font-mono text-text-primary focus:border-brand-primary outline-none"
+            />
+          </div>
         </div>
       </div>
 

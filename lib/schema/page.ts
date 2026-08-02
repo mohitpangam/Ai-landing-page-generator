@@ -8,6 +8,7 @@ export type ThemeTokens = {
   textTertiary: string;
   textAccent: string;
   borderRadius: "none" | "sm" | "md" | "lg" | "full";
+  mode?: "light" | "dark";
 };
 
 export type HeroContent = {
