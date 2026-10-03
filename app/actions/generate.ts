@@ -1,6 +1,6 @@
 "use server";
 
-import { getGeminiModel } from "@/lib/gemini";
+import { generateGeminiContent, getGeminiModel } from "@/lib/gemini";
 import { buildPageGenerationPrompt } from "@/lib/prompts/generate-page";
 import { PageSchemaZod } from "@/lib/schema/page.zod";
 import type { PageSchema } from "@/lib/schema/page";
@@ -31,7 +31,7 @@ export async function generatePageAction(
   const geminiModel = getGeminiModel();
 
   try {
-    let result = await geminiModel.generateContent(promptText);
+    let result = await generateGeminiContent(geminiModel, promptText);
     let rawText = result.response.text();
     let cleanedJson = cleanJsonResponse(rawText);
     let parsed = JSON.parse(cleanedJson);
@@ -51,7 +51,7 @@ export async function generatePageAction(
         2
       )}\nPlease fix all formatting errors and output valid JSON matching the exact schema requirements.`;
 
-      result = await geminiModel.generateContent(correctivePrompt);
+      result = await generateGeminiContent(geminiModel, correctivePrompt);
       rawText = result.response.text();
       cleanedJson = cleanJsonResponse(rawText);
       parsed = JSON.parse(cleanedJson);

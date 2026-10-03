@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/auth";
-import { getGeminiTextModel } from "@/lib/gemini";
+import { generateGeminiContent, getGeminiTextModel } from "@/lib/gemini";
 
 const TONE_PROMPTS: Record<string, string> = {
   punchy: "Make this text punchy, energetic, high-converting, and compelling for a SaaS landing page.",
@@ -40,7 +40,7 @@ Respond ONLY with a valid JSON array of 3 strings. Example format:
 `;
 
     const model = getGeminiTextModel();
-    const result = await model.generateContent(prompt);
+    const result = await generateGeminiContent(model, prompt);
     const rawResponse = result.response.text().trim();
 
     let suggestions: string[] = [];
